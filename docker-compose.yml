@@ -1,0 +1,19 @@
+
+version: "3"
+services:
+  web-app:
+    build: .
+    container_name: 'sw_api'
+    command: sh -c 'npm install; npm start'
+    ports:
+      - '3000:3000'
+    volumes:
+      - /home/hernan/NSQL/api:/api
+    depends_on:
+      - "db-redis"
+
+  db-redis:
+    container_name: 'db_sw_api'
+    image: redis
+    ports:
+      - "6379:6379"
