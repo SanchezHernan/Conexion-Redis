@@ -13,6 +13,8 @@
     "redis": "^3.1.1"
   },
   "dependencies": {
-    "nodemon": "*"
+    "cors": "^2.8.5",
+    "nodemon": "*",
+    "react-router-dom": "^5.2.0"
   }
 }

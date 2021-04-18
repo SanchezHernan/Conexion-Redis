@@ -1,8 +1,16 @@
 var redis = require('redis')
 var express = require('express')
+const cors = require('cors');
+
 
 var redis_cliente = redis.createClient(6379, 'db-redis')
 var app = express()
+
+
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
+app.use(cors())
 
 
 redis_cliente.on('connect', function(){
@@ -28,7 +36,7 @@ redis_cliente.on('connect', function(){
 
 
 app.get('/', function( req, res){
-    redis_cliente.lrange('personajes', 0, -1, function(err, values){
+    redis_cliente.lrange('La Amenaza Fantasma', 0, -1, function(err, values){
         res.send(JSON.stringify(values))
     })
 })
@@ -52,6 +60,17 @@ app.get('/remove/:episodio/:count/:element', function( req, res){
     res.send('OK')
 })
 
+app.get('/delete/:key', function( req, res){
+    const {key} = req.params;
+    redis_cliente.del(key)
+    res.send('Key eliminated correctly!')
+})
+
+app.get('/episodios', function( req, res){
+    redis_cliente.keys('*', function(err, values){
+        res.send(JSON.stringify(values))
+    })
+})
 
 
 app.listen(3000, function(){
